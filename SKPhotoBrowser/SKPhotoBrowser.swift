@@ -452,8 +452,8 @@ internal extension SKPhotoBrowser {
             ? zoomingScrollView.center.y - viewHalfHeight
             : -(zoomingScrollView.center.y - viewHalfHeight)) / viewHalfHeight
         
-        view.backgroundColor = bgColor.withAlphaComponent(max(0.7, offset))
         
+        view.backgroundColor = bgColor.withAlphaComponent(max(0, offset))
         // gesture end
         if sender.state == .ended {
             
