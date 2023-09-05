@@ -426,53 +426,44 @@ internal extension SKPhotoBrowser {
 
 internal extension SKPhotoBrowser {
     @objc func panGestureRecognized(_ sender: UIPanGestureRecognizer) {
-        guard let zoomingScrollView: SKZoomingScrollView = pagingScrollView.pageDisplayedAtIndex(currentPageIndex) else {
-            return
-        }
-        
+        guard let zoomingScrollView = pagingScrollView.pageDisplayedAtIndex(currentPageIndex) else { return }
+
         animator.backgroundView.isHidden = true
         let viewHeight: CGFloat = zoomingScrollView.frame.size.height
-        let viewHalfHeight: CGFloat = viewHeight/2
+        let viewHalfHeight: CGFloat = viewHeight / 2
         var translatedPoint: CGPoint = sender.translation(in: self.view)
-        
-        // gesture began
+
         if sender.state == .began {
             firstX = zoomingScrollView.center.x
             firstY = zoomingScrollView.center.y
-            
+
             hideControls()
             setNeedsStatusBarAppearanceUpdate()
         }
-        
+
         translatedPoint = CGPoint(x: firstX, y: firstY + translatedPoint.y)
         zoomingScrollView.center = translatedPoint
-        
-        let minOffset: CGFloat = viewHalfHeight / 4
-        let offset: CGFloat = 1 - (zoomingScrollView.center.y > viewHalfHeight
-            ? zoomingScrollView.center.y - viewHalfHeight
-            : -(zoomingScrollView.center.y - viewHalfHeight)) / viewHalfHeight
-        
-        
-        view.backgroundColor = bgColor.withAlphaComponent(max(0, offset))
-        // gesture end
+
+        let minOffset = viewHalfHeight / 4
+        let offset = abs(zoomingScrollView.center.y - viewHalfHeight)
+        let offsetPercent = 1 - offset / viewHalfHeight
+
+        view.backgroundColor = bgColor.withAlphaComponent(max(0, offsetPercent))
+
         if sender.state == .ended {
-            
-            if zoomingScrollView.center.y > viewHalfHeight + minOffset
-                || zoomingScrollView.center.y < viewHalfHeight - minOffset {
-                
+            if offset > minOffset {
                 determineAndClose()
-                
             } else {
                 // Continue Showing View
                 setNeedsStatusBarAppearanceUpdate()
                 view.backgroundColor = bgColor
 
-                let velocityY: CGFloat = CGFloat(0.35) * sender.velocity(in: self.view).y
-                let finalX: CGFloat = firstX
-                let finalY: CGFloat = viewHalfHeight
-                
-                let animationDuration: Double = Double(abs(velocityY) * 0.0002 + 0.2)
-                
+                let velocityY =  sender.velocity(in: self.view).y * 0.35
+                let finalX = firstX
+                let finalY = viewHalfHeight
+
+                let animationDuration = Double(abs(velocityY) * 0.0002 + 0.2)
+
                 UIView.beginAnimations(nil, context: nil)
                 UIView.setAnimationDuration(animationDuration)
                 UIView.setAnimationCurve(UIView.AnimationCurve.easeIn)

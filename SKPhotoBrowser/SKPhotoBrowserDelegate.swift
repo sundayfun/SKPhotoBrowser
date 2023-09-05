@@ -88,3 +88,7 @@ import UIKit
     @objc optional func captionViewForPhotoAtIndex(index: Int) -> SKCaptionView?
 }
 
+    /**
+     Custom dismiss action, if implemented, the default dismiss action will be ignored.
+     */
+    @objc optional func customDismiss()
