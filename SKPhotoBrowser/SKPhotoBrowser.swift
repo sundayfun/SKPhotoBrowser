@@ -337,11 +337,11 @@ public extension SKPhotoBrowser {
     
     func hideControls() {
         setControlsHidden(true, animated: true, permanent: false)
+        delegate?.controlsVisibilityToggled?(self, hidden: true)
     }
     
     @objc func hideControls(_ timer: Timer) {
         hideControls()
-        delegate?.controlsVisibilityToggled?(self, hidden: true)
     }
     
     func toggleControls() {
