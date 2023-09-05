@@ -1,5 +1,7 @@
 # Created by https://www.gitignore.io
-
+# SPM
+.build/
+.swiftpm/
 # mac
 .DS_Store
 
