@@ -90,5 +90,5 @@ import UIKit
     /**
      Custom dismiss action, if implemented, the default dismiss action will be ignored.
      */
-    @objc optional func customDismiss()
+    @objc optional func customDismiss(_ browser: SKPhotoBrowser)
 }

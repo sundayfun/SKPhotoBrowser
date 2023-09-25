@@ -227,7 +227,7 @@ open class SKPhotoBrowser: UIViewController {
     open func determineAndClose() {
         delegate?.willDismissAtPageIndex?(self.currentPageIndex)
         if let dismiss = delegate?.customDismiss {
-            dismiss()
+            dismiss(self)
         } else {
             animator.willDismiss(self)
         }
